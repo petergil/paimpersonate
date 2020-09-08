@@ -1,0 +1,68 @@
+
+#+TITLE: paimpersonate - impersonate pulseadio applications
+
+I use several sound outputs concurrently with my computers (built-in
+sound card, usb headset, hdmi/displayport to monitor , ...).
+Unfortunately some applications lock the output used while they are
+running (games tend to do this, or de-register their output when
+losing focus). This makes it difficult to manage their outputs.
+
+paimpersonate is a simple utility to make this kind of management a
+bit easier by impersonating the application inside of pulseaudio but
+not doing any locking or overriding of settings. While paimpersonate
+is running it's possible to change the settings for the impersonated
+application, which will then be saved inside of pulseaudio for later
+runs.
+
+* Usage
+
+First get the name of the application as it registers to pulseaudio
+(for example through ~pavucontrol~ or ~pacmd list-clients~).
+
+To use paimpersonate just give the name of the application to
+impersonate as the first (and only) argument. paimpersonate will
+register with that name to pulseaudio and wait for some while (this is
+configurable in the source, default is 60 seconds). During this time
+you should be able to edit the pulseaudio properties of the
+application.
+
+An example invocation works like this
+
+#+BEGIN_SRC sh
+paimpersonate appname
+#+END_SRC
+
+if the application presents itself with a name with spaces you can use
+quotes to manage that. Something like
+
+#+BEGIN_SRC sh
+paimpersonate "Application Name"
+#+END_SRC
+
+will work.
+
+* Compiling
+
+** Build
+
+Provided that you have all dependencies installed paimpersonate should
+build just by doing ~make~. You need your distributions package
+equivalent of pulseaudio libs/main application and pulseaudio
+development libraries installed. On Ubuntu or Debian the absolute
+minimum should be something like ~libpulse0~ and ~libpulse-dev~.
+
+** Install
+
+You can install ~paimpersonate~ by copying the executable to a
+directory in your path (such as ~/usr/bin/~)
+
+** Clean
+
+To clean the build environment do ~make clean~. This should normally
+not be needed unless you have updated the pulseaudio libraries with an
+ABI incompatible version.
+
+* Planned features
+
+Also register as a recording application to be able to change settings
+for inputs as well.
